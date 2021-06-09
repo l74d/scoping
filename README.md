@@ -20,7 +20,7 @@ Simply download scoping.py to use the package
 
 ## Motivation/Prior Art
 
-[https://github.com/bskinn/tempvars](See https://github.com/bskinn/tempvars)
+See https://github.com/bskinn/tempvars
 
 ## Compatibility
 
