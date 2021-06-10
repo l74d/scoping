@@ -1,4 +1,4 @@
-# Scoping: Probably the best way to simulate block scopes in Python.
+# scoping: Probably the best way to simulate block scopes in Python.
 
 This is a package, as it says on the tin, to emulate block scoping in Python, 
 the lack of which being a clever design choice yet sometimes a trouble.

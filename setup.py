@@ -21,8 +21,14 @@ setup(
         'License :: OSI Approved :: BSD License',
         "Operating System :: OS Independent",
     ],
-    package_dir = {"": "."},
-    packages = {},
+    py_modules=['scoping'],
+    entry_points='''
+        [console_scripts]
+        scoping=scoping:scoping
+        ''',
+                        
+    #package_dir = {"": "."},
+    #packages = {},
     python_requires=">=3.6",
 )    
 
