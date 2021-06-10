@@ -17,6 +17,8 @@ you can also directly download scoping.py to where your main script is to use th
 
 To start a scoped block (where the variables created in the block is to be deleted after the block) use
 
+.. code:: python
+
     with scoping():
         ....
 
