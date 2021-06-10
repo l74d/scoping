@@ -12,19 +12,18 @@ block scoping in particular helps to have variables garbage collected as soon as
 
 ## Usage
 
- Other than PyPI,
-simply download scoping.py to where your main script is to use the package.
+ Other than installing from PyPI the usual way,
+you can also directly download scoping.py to where your main script is to use the package.
 
 To start a scoped block (where the variables created in the block is to be deleted after the block) use
 
     with scoping():
         ....
 
-Within a block, you can selectively let a variable leak through to the outer scope (as in the traditional behavior in Python) by passing the name to
+Within a block, you can selectively let a variable leak through to the outer scope (as in the traditional behavior in Python) by passing the name (as a string) to
 
     scoping.keep()
 
-as a string.  
 If you are only after using the library, 
 just consider scoping and scoping.keep as 
 some kind of quasi-keywords rather than real classes/objects.
