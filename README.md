@@ -29,7 +29,7 @@ just consider scoping and scoping.keep as
 some kind of quasi-keywords rather than real classes/objects.
 
 See 
-
+```python
     from scoping import scoping
     a = 2
     with scoping():
@@ -40,6 +40,7 @@ See
         assert(3 == a)
     assert(2 == a)
     assert(4 == b)
+```
 
 In the rare case that you would like to reserve the word "scoping" for other uses, the class can be renamed arbitrarily using the following trick:
 
