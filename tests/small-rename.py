@@ -2,12 +2,12 @@ import scoping
 class VeryScoped(scoping.scoping): pass
 del scoping
 
-a = 2
+scoping = 2
 with VeryScoped():
-    assert(2 == a)
-    a = 3
-    b = 'BB'
-    VeryScoped.keep('b')
-    assert(3 == a)
-assert(2 == a)
-assert('BB' == b)
+    assert(2 == scoping)
+    scoping = 3
+    keep = 'BB'
+    VeryScoped.keep('keep')
+    assert(3 == scoping)
+assert(2 == scoping)
+assert('BB' == keep)

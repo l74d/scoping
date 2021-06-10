@@ -38,7 +38,8 @@ In the rare case that you would like to reserve the word "scoping" for other use
     class VeryScoped(scoping.scoping): pass
     del scoping
 
-Then the names VeryScoped and VeryScoped.keep can be used instead.
+Then the names VeryScoped and VeryScoped.keep can be used instead,
+whereas the name scoping can be used for other purposes at will.
 
 Blocks can be nested, as well as used in functions (unlike prior art),
 at the price of relying on some CPython specific feature.
