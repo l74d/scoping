@@ -16,9 +16,10 @@ block scoping in particular helps to have variables garbage collected as soon as
 you can also directly download scoping.py to where your main script is to use the package.
 
 To start a scoped block (where the variables created in the block is to be deleted after the block) use
-
+```python
     with scoping():
-        ....
+        #scoped code here........
+```
 
 Within a block, you can selectively let a variable leak through to the outer scope (as in the traditional behavior in Python) by passing the name (as a string) to
 
