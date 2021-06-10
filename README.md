@@ -47,15 +47,15 @@ In the rare case that you would like to reserve the word "scoping" for other use
     class VeryScoped(scoping.scoping): pass
     del scoping
 
-Then the names VeryScoped and VeryScoped.keep can be used instead,
-whereas the name scoping can be used for other purposes at will.
+Then the names "VeryScoped" and "VeryScoped.keep" can be used instead,
+whereas the name "scoping" can be put to other uses at will.
 
 Blocks can be nested, as well as used in functions (unlike prior art),
 at the price of relying on some CPython specific feature.
 
 ## Motivation/Prior Art
 
-See https://github.com/bskinn/tempvars with a similar idea but not the intended use of general programming, as well as an interface harder to use (IMHO).
+See https://github.com/bskinn/tempvars with a similar idea but not the intended use for general programming, as well as a more mentally demanding interface (IMHO).
 
 ## Compatibility
 
