@@ -1,12 +1,12 @@
-from setuptools import setup
+import setuptools 
 
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-setup(
+setuptools.setup(
     name = 'scoping',
-    version = '0.1.0',
+    version = '0.1.2',
     author = 'l74d',
     author_email = 'l.d.code@outlook.com',
     description = 'Probably the best way to simulate block scopes in Python.',
@@ -21,14 +21,16 @@ setup(
         'License :: OSI Approved :: BSD License',
         "Operating System :: OS Independent",
     ],
-    py_modules=['scoping'],
-    entry_points='''
-        [console_scripts]
-        scoping=scoping:scoping
-        ''',
+    #py_modules=['scoping'],
+    #entry_points='''
+    #    [console_scripts]
+    #    scoping=scoping:scoping
+    #    ''',
                         
+    package_dir = {"": "src"}, #{"": "."},
+    packages    = setuptools.find_packages(where="src"), #{},
     #package_dir = {"": "."},
-    #packages = {},
+    #packages    = {"scoping"},
     python_requires=">=3.6",
 )    
 
