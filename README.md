@@ -24,7 +24,10 @@ Within a block, you can selectively let a variable leak through to the outer sco
 
     scoping.keep()
 
-as a string.
+as a string.  
+If you are only after using the library, 
+just consider scoping and scoping.keep as 
+some kind of quasi-keywords rather than real classes/objects.
 
 See 
 
