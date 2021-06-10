@@ -30,23 +30,25 @@ some kind of quasi-keywords rather than real classes/objects.
 
 See 
 ```python
-    from scoping import scoping
-    a = 2
-    with scoping():
-        assert(2 == a)
-        a = 3
-        b = 4
-        scoping.keep('b')
-        assert(3 == a)
+from scoping import scoping
+a = 2
+with scoping():
     assert(2 == a)
-    assert(4 == b)
+    a = 3
+    b = 4
+    scoping.keep('b')
+    assert(3 == a)
+assert(2 == a)
+assert(4 == b)
 ```
 
 In the rare case that you would like to reserve the word "scoping" for other uses, the class can be renamed arbitrarily using the following trick:
 
-    import scoping
-    class VeryScoped(scoping.scoping): pass
-    del scoping
+```python
+import scoping
+class VeryScoped(scoping.scoping): pass
+del scoping
+```
 
 Then the names "VeryScoped" and "VeryScoped.keep" can be used instead,
 whereas the name "scoping" can be put to other uses at will.
