@@ -45,7 +45,7 @@ at the price of relying on some CPython specific feature.
 
 ## Motivation/Prior Art
 
-See https://github.com/bskinn/tempvars
+See https://github.com/bskinn/tempvars which stemmed from a similar idea but was not intended for general programming, as well as a interface harder to use (IMHO).
 
 ## Compatibility
 
