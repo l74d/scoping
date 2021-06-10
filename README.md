@@ -2,9 +2,11 @@
 
 This is a package, as it says on the tin, to emulate block scoping in Python, 
 the lack of which being a clever design choice yet sometimes a trouble.
+
 In addition to readability and code organization 
 (where your mileage may vary),
 block scoping in particular helps to have variables garbage collected as soon as possible, which is useful for situations where variables may refer to expensive resources (e.g. GPU arrays).
+
  This package is designed to be as easy to use as possible, with the least mental burden on the user,
  whilst the implementation being necessarily confusing and cryptic due to the tricks used.
 
