@@ -28,6 +28,8 @@
 #OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import inspect
+import ctypes
 
 class scoping(object):
     #compose tests to whitelist some variables?
@@ -54,9 +56,26 @@ class scoping(object):
             return (lambda x: x in args)
     #_kept = set(()) #not needed at the outmost level
     #def keep(*vs):  _kept.update(map(id,vs)) #has no way to reference current class!
-    def __init__(self, scope, *args, preserving = None, whitelisting = None):
+    @classmethod
+    def settle(c, scope):
+        c1 = type(c.__name__, c.__bases__, dict(c.__dict__))
+        c1.module_globals = scope
+        k = c.__name__
+        scope[k] = c1
+        if c.debugging:
+            assert(c1.module_globals is inspect.stack()[1][0].f_globals)
+            import sys; print('SELF0',k,id(c),id(c1),file=sys.stderr)
+
+    def __init__(self, *args, preserving = None, whitelisting = None):
         if whitelisting is None: whitelisting = self.whitelisting
-        import inspect
+        if len(args)>0 and type(args[0]) == dict:
+            self.scope = args[0]
+            args = args[1:]
+            if self.debugging:
+                assert(self.scope is inspect.stack()[1][0].f_locals)
+        else:
+            self.scope = inspect.stack()[1][0].f_locals
+            
         c = self.__class__
         f0 = c.interpret_test_arguments(*args)
         #g0 = self.test #binds first argument as self!
@@ -71,33 +90,23 @@ class scoping(object):
                 if 1 == len(inspect.getfullargspec(f0).args) \
                 else f0
             self.test = (lambda k,v: g1(k,v) and not f1(k,v)) if whitelisting else f1
-        #import pdb; pdb.set_trace()
-        self.scope = scope
         if preserving is not None:
             self.preserving = preserving
         assert self.preserving in [0,1,2]
         if self.preserving < 2:
             self.shadowed = {}
+
+        if hasattr(c,'module_globals'):
+            if self.debugging:
+                assert(c.module_globals is inspect.stack()[1][0].f_globals)
+            self.scope_of_class = c.module_globals
+                #self.scope #globals() #wrong globals().
+        else:
+            self.scope_of_class = inspect.stack()[1][0].f_globals
         for k in list(self.scope.keys()):
             if k == c.__name__:
-                #always pop-push with new classes regardless of test
-                #if self.test(k,self.scope[k]):
-                    #self.shadowed[k] = c
-                c1 = type(c.__name__, c.__bases__, dict(c.__dict__))
-                    #c.__dict__ can't be deep-copied #TypeError: cannot pickle 'getset_descriptor' object
-                #c1._kept = set(())
-                #c1.keep = lambda *vs: c1._kept.update(map(id,vs))
-                #c1._kept = {}
-                #c1.keep = lambda *vs: c1._kept.update({id(v):(print('idv',id(v)),v)[1] for v in vs})
-                #get reference to c1 by closure.
-                #object could be del'ed after being kept.
-                #object kept in dict not released......
-                #TODO: get object created time/frame?
-                #      patch __del__?
-                c1._kept = set(())
-                c1.keep = lambda *ks: c1._kept.update(ks)
-                self.scope[k] = c1
-                if self.debugging: import sys; print('SELF',k,file=sys.stderr)
+                self.scope_of_class = self.scope
+                pass
             elif self.test(k,self.scope[k]):
                 if self.preserving < 2:
                     self.shadowed[k] = self.scope[k]
@@ -105,12 +114,39 @@ class scoping(object):
                 if 0 == self.preserving:
                     self.scope.pop(k)
                     if self.debugging: import sys; print('POP',k,file=sys.stderr)
+
+        k = c.__name__
+        #always pop-push with new classes regardless of test
+        #if self.test(k,self.scope[k]):
+            #self.shadowed[k] = c
+        c1 = type(c.__name__, c.__bases__, dict(c.__dict__))
+            #c.__dict__ can't be deep-copied #TypeError: cannot pickle 'getset_descriptor' object
+        #c1._kept = set(())
+        #c1.keep = lambda *vs: c1._kept.update(map(id,vs))
+        #c1._kept = {}
+        #c1.keep = lambda *vs: c1._kept.update({id(v):(print('idv',id(v)),v)[1] for v in vs})
+        #get reference to c1 by closure.
+        #object could be del'ed after being kept.
+        #object kept in dict not released......
+        #TODO: get object created time/frame?
+        #      patch __del__?
+        c1._kept = set(())
+        c1.keep = lambda *ks: c1._kept.update(ks)
+        self.scope_of_class[k] = c1
+        if self.debugging:
+            import sys; print('SELF',k,id(c),id(c1),file=sys.stderr)
     def __enter__(self):
         pass
     def __exit__(self, exc_type, exc_val, exc_tb):
+        #if self.debugging:
+        assert(self.scope is inspect.stack()[1][0].f_locals)
+            #implicitly activates something necessary
+        self.scope = inspect.stack()[1][0].f_locals
+        frame = inspect.stack()[1][0]
+        #import pdb; pdb.set_trace()
         assert(self.preserving in [0,1,2])
         c = self.__class__
-        c1 = self.scope[c.__name__]
+        c1 = self.scope_of_class[c.__name__]
         if self.preserving < 2:
             for k in list(self.scope.keys()):
                 if self.test(k,self.scope[k]) and not (
@@ -122,13 +158,26 @@ class scoping(object):
                     #check only the key? 
                     ):
                     self.scope.pop(k)
-                    if self.debugging: import sys; print('POP',k,file=sys.stderr)
+                    if self.debugging:
+                        import sys
+                        print('POP',k,id(self.scope),file=sys.stderr)
             u = { k:self.shadowed[k] for k in self.shadowed if k not in c1._kept }
             self.scope.update(u)
-            if self.debugging: import sys; print('UNSHADOW',*u.keys(),file=sys.stderr)
+            if self.debugging:
+                import sys;
+                print('UNSHADOW',*u.keys(),file=sys.stderr)
         del c1._kept
-        self.scope[c.__name__] = c
-        if self.debugging: import sys; print('RESTORE SELF',c.__name__,file=sys.stderr)
+        self.scope_of_class[c.__name__] = c
+        if self.debugging:
+            import sys;
+            print('RESTORE SELF',c.__name__,file=sys.stderr)
+
+        #https://pydev.blogspot.com/2014/02/changing-locals-of-frame-frameflocals.html
+        #https://stackoverflow.com/questions/34650744/modify-existing-variable-in-locals-or-frame-f-locals
+        #https://www.python.org/dev/peps/pep-0558/
+        ctypes.pythonapi.PyFrame_LocalsToFast(
+            ctypes.py_object(frame), ctypes.c_int(1))
+
         return False
 
 if False:

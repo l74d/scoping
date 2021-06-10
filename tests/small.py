@@ -1,7 +1,8 @@
-
 from scoping import scoping
+#scoping.settle(globals())
+
 a = 2
-with scoping(locals()):
+with scoping():
     assert(2 == a)
     a = 3
     b = 'BB'
