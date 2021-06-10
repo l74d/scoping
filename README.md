@@ -8,14 +8,19 @@ block scoping in particular helps to have variables garbage collected as soon as
 
 Simply download scoping.py to where your main script is to use the package.
 
-To start a scoped block, where the variables created in the block is to be deleted after the block, use
+To start a scoped block (where the variables created in the block is to be deleted after the block) use
+
     with scoping():
         ....
+
 Within a block, you can selectively let a variable leak through to the outer scope (as in the traditional behavior in Python) by passing the name to
+
     scoping.keep()
+
 as a string.
 
 See 
+
     from scoping import scoping
     a = 2
     with scoping():
