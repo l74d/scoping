@@ -7,8 +7,8 @@ In addition to readability and code organization
 (where your mileage may vary),
 block scoping in particular helps to have variables garbage collected as soon as possible, which is useful for situations where variables may refer to expensive resources (e.g. GPU arrays).
 
- This package is designed to be as easy to use as possible, with the least mental burden on the user,
- whilst the implementation being necessarily confusing and cryptic due to the tricks used.
+This package is designed to be as easy to use as possible, with the least mental burden on the user,
+whilst the implementation being necessarily confusing and cryptic due to the tricks used.
 
 ## Usage
 
@@ -43,7 +43,7 @@ assert(2 == a)
 assert(4 == b)
 ```
 
-In the rare case that you would like to reserve the word "scoping" for other uses, the class can be renamed arbitrarily using the following trick:
+In the rare case that you would like to reserve the word `scoping` for other uses, the class can be renamed arbitrarily using the following trick:
 
 ```python
 import scoping
@@ -51,8 +51,8 @@ class VeryScoped(scoping.scoping): pass
 del scoping
 ```
 
-Then the names "VeryScoped" and "VeryScoped.keep" can be used instead,
-whereas the name "scoping" can be put to other uses at will.
+Then the names `VeryScoped` and `VeryScoped.keep` can be used instead,
+whereas the name `scoping` can be put to other uses at will.
 
 Blocks can be nested, as well as used in functions (unlike prior art),
 at the price of relying on some CPython specific feature.
