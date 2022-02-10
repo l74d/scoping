@@ -13,7 +13,7 @@ whilst the implementation being necessarily confusing and cryptic due to the tri
 ## Usage
 
  Other than installing from PyPI the usual way,
-you can also directly download scoping.py to where your main script is to use the package.
+you can also directly download `scoping.py` to where your main script is to use the package.
 
 To start a scoped block (where the variables created in the block is to be deleted after the block) use
 ```python
