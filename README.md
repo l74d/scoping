@@ -61,6 +61,10 @@ at the price of relying on some CPython specific feature.
 
 See https://github.com/bskinn/tempvars with a similar idea but not the intended use for general programming, as well as a more mentally demanding interface (IMHO).
 
+## Relationship with JavaScript
+
+This functionality is also similar to JavaScript `let` keyword if you consider the default behavior to be the JavaScript `var`, though neither would be a perfect match. Now that JavaScript has its `let`, I would look forward to this making its way into the main language, as the same arguments for `let` in JavaScript apply to the adoption of this package in Python.
+
 ## Compatibility
 
 Tested with python 3.6/7/8/9 under Linux
